@@ -1,0 +1,37 @@
+
+
+<img src="/home.png" class="icon" alt="">
+
+<h1>New Request</h1>
+<form class="ui form" action="request" method="POST">
+  <div class="field">
+    <label>Description</label>
+    <input type="text" name="description" placeholder="Enter the description ehre "/>
+  </div>
+  <div class="field">
+    <label>Dataset ID</label>
+    <input type="text" name="datasetid" placeholder="Enter the dataset ID"/>
+  </div>
+  <input class="ui fluid large teal submit secondary button" type="submit" name="Add" value="Add"/>
+</form>
+
+
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Requested On</th>
+      <th>Description</th>
+      <th>Dataset ID</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% requests.each do |request| %>
+    <tr>
+      <td><%= request["node"]["requestedOn"] %></td>
+      <td><%= request["node"]["description"] %></td>
+      <td><%= request["node"]["datasetId"] %></td>
+    </tr>
+    <%end %>
+  </tbody>
+
+</table>
