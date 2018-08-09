@@ -1,6 +1,6 @@
 export WORKSPACE=/home/vagrant
 # Requests
-echo "Setting up requests micro-service"
+echo "Setting up requests micro-service ..."
 sudo apt-get update
 sudo apt-get install python-pip python-dev build-essential -y
 ssh-keyscan github.com >> ~/.ssh/known_hosts
@@ -11,7 +11,7 @@ $WORKSPACE/ainn-request/.venv/bin/pip install -r requirements.txt
 nohup $WORKSPACE/ainn-request/.venv/bin/python app.py &
 
 # User management
-echo "Setting up mongoDB"
+echo "Setting up mongoDB ..."
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
 sudo apt-get update
@@ -28,7 +28,11 @@ go get github.com/mongodb/mongo-go-driver/bson
 cd $WORKSPACE;git clone https://github.com/oeg-upm/ainn-userm.git
 cd $WORKSPACE/ainn-userm; go build; nohup ./ainn-userm &
 
+#commands to install virtuoso
+echo "Installing Virtuoso ..."
+sudo apt-get install virtuoso-opensource -y
 #commands to install mappingpedia-engine-datasets
+echo "Installing Mappingpedia ..."
 sudo apt-get update
 sudo apt-get install maven -y
 sudo apt-get install openjdk-8-jdk-headless
