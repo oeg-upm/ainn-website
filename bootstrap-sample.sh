@@ -9,6 +9,8 @@ sudo pip install virtualenv
 cd $WORKSPACE/ainn-request; virtualenv -p /usr/bin/python2.7 .venv
 $WORKSPACE/ainn-request/.venv/bin/pip install -r requirements.txt
 nohup $WORKSPACE/ainn-request/.venv/bin/python app.py &
+#commands to install virtuoso
+sudo apt-get install virtuoso-opensource -y
 #commands to install mappingpedia-engine-datasets
 sudo apt-get update
 sudo apt-get install maven -y
