@@ -28,9 +28,6 @@ go get github.com/mongodb/mongo-go-driver/bson
 cd $WORKSPACE;git clone https://github.com/oeg-upm/ainn-userm.git
 cd $WORKSPACE/ainn-userm; go build; nohup ./ainn-userm &
 
-#commands to install virtuoso
-echo "Installing Virtuoso ..."
-sudo apt-get install virtuoso-opensource -y
 #commands to install mappingpedia-engine-datasets
 echo "Installing Mappingpedia ..."
 sudo apt-get update
