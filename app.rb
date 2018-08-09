@@ -4,6 +4,8 @@ require 'net/http'
 # so sinatra will reload whenever a new changes happen
 
 require "sinatra/reloader"
+# require "sinatra/config_file"
+# config_file 'config.yml'
 #set :environment, :development
 
 # enable :reloader
@@ -144,7 +146,7 @@ get "/" do
 end
 
 get "/about" do
-  "This is the about page .. to be filled later on"
+  erb :about
 end
 
 get "/requests" do
