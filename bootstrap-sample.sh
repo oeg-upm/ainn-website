@@ -59,4 +59,72 @@ cd mappingpedia-engine-datasets
 mvn clean install
 cd ..
 cd mappingpedia-engine-datasets-ws
-mvn clean spring-boot:run
+nohup mvn clean spring-boot:run &
+
+# Website
+echo "Installing the Website ..."
+#sudo apt-get install ruby -y
+cd $WORKSPACE; git clone https://github.com/oeg-upm/ainn-website.git
+sudo apt-get install software-properties-common
+sudo apt-add-repository -y ppa:rael-gc/rvm
+sudo apt-get update
+sudo apt-get install rvm -y
+echo "source /etc/profile.d/rvm.sh" >> ~/.bash_profile
+cd $WORKSPACE/ainn-website;
+/etc/profile.d/rvm.sh install ruby
+#rvm install ruby
+sudo gem install sinatra
+sudo gem install sinatra-reloader
+sudo gem install passenger
+
+sudo apt-get install libcurl4-openssl-dev ruby-dev libssl-dev apache2-dev libapr1-dev libaprutil1-dev -y
+
+# Set up Apache
+echo "Setting up apache"
+cat <<EOT >> /etc/apache2/sites-available/ainnwebsite.conf
+<VirtualHost *:80>
+ServerAdmin ahmad.alobaid@accenture.com
+DocumentRoot $WORKSPACE/ainn-website/public
+<Directory $WORKSPACE/ainn-website/public>
+Require all granted
+Allow from all
+Options -MultiViews
+</Directory>
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+EOT
+
+sudo a2dissite 000-default.conf
+sudo a2ensite ainnwebsite.conf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
