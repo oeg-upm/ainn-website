@@ -1,7 +1,10 @@
 # ainn-website
 
+# Pre Vagrant (Once)
+1. vagrant up
+2. vagrant ssh
 
-# Post Vagrant
+# Post Vagrant (once)
 1. ```sudo apt-get install virtuoso-opensource```
 2. ```sudo passenger-install-apache2-module```
 3. copy the below to `/etc/apache2/apache2.conf`
@@ -14,9 +17,5 @@ PassengerDefaultRuby /usr/bin/ruby2.3
 ```
 This might be different. See the output of the previous step which will output the configurations with the correct versions
 
-# Run the app (locally)
-```
-sudo rackup -p 80
-```
-Note that running the app with this will not make the app accessible from outside
-
+# Run the app (whenever you start the app)
+``` sh startup.sh ```
