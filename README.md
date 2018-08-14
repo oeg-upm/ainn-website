@@ -18,4 +18,7 @@ PassengerDefaultRuby /usr/bin/ruby2.3
 This might be different. See the output of the previous step which will output the configurations with the correct versions
 
 # Run the app (whenever you start the app)
-``` sh startup.sh ```
+``` 
+cd $HOME/ainn-website/
+sh startup.sh 
+```
