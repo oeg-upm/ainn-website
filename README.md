@@ -3,9 +3,7 @@
 
 # Post Vagrant
 1. ```sudo apt-get install virtuoso-opensource```
-2. ```
-sudo passenger-install-apache2-module
-```
+2. ```sudo passenger-install-apache2-module```
 3. copy the below to `/etc/apache2/apache2.conf`
 ```
 LoadModule passenger_module /var/lib/gems/2.3.0/gems/passenger-5.3.4/buildout/apache2/mod_passenger.so
