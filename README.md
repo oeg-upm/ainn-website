@@ -21,5 +21,6 @@ This might be different. See the output of the previous step which will output t
 # Run the app (whenever you start the app)
 ``` 
 cd $HOME/ainn-website/
-sh startup.sh 
+source <(curl -s https://raw.githubusercontent.com/oeg-upm/ainn-website/master/startup.sh)
 ```
+
