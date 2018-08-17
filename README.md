@@ -16,7 +16,7 @@ PassengerDefaultRuby /usr/bin/ruby2.3
 </IfModule>
 ```
 This might be different. See the output of the previous step which will output the configurations with the correct versions
-4. sudo service apache2 restart
+4. ```sudo service apache2 restart```
 
 # Run the app (whenever you start the app)
 ``` 
