@@ -137,8 +137,28 @@ get "/home" do
   erb :home
 end
 
+CKAN_ORGANIZATION_LIST = 'http://83.212.100.226/ckan/api/action/organization_list?all_fields=true'
 get "/mydatahub" do
-  erb :mydatahub
+  puts "I am in mydatahub"
+  uri = URI(CKAN_ORGANIZATION_LIST)
+  res = Net::HTTP.get_response(uri)
+  puts res.body
+  puts res.code
+  if res.code === "200"
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      return erb :mydatahub, :locals => {:organization_list => j["result"]}
+    else
+      return erb :msg, :locals => {:msg => "Internal Error"}
+    end
+  else
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      return erb :msg, :locals => {:msg => j["error"]}
+    else
+      return erb :msg, :locals => {:msg => "Internal Error"}
+    end
+  end
 end
 
 get "/" do
