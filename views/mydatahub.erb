@@ -1,3 +1,4 @@
+<form method="POST" action="/dataset">
 <p>
 <label for="organization_id">Select an organization: </label>
 <select class="ui dropdown" id='organization_id' name='organization_id' type='text'>
@@ -6,3 +7,15 @@
   <% end %>
 </select>
 </p>
+
+
+<p>
+  <label for="distribution_download_url">Download URL of the new dataset: </label>
+  <input type="text" name="distribution_download_url">
+</p>
+
+<p>
+  <input type="submit">
+</p>
+
+</form>

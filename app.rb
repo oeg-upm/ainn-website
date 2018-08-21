@@ -132,6 +132,34 @@ post "/register" do
   end
 end
 
+MPE_DATASET_ADD = 'http://localhost:8092/datasets/'
+post "/dataset" do
+  organization_id = params[:organization_id]
+  distribution_download_url = params[:distribution_download_url]
+  uri = URI(MPE_DATASET_ADD + "/" + organization_id)
+  res = Net::HTTP.post_form(uri, 'distribution_download_url' => distribution_download_url)
+
+  puts res.body
+  puts res.code
+  if res.code === "200"
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      dataset_id = j["dataset_id"]
+      return erb :msg, :locals => {:msg => "Dataset " + dataset_id + " is created successfully", :organization_id => organization_id}
+    else
+      return erb :msg, :locals => {:msg => "Internal Error"}
+    end
+
+  else
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      return erb :msg, :locals => {:msg => j["error"]}
+    else
+      return erb :msg, :locals => {:msg => "Internal Error"}
+    end
+  end
+end
+
 get "/home" do
   @displayname = session[:displayname]
   erb :home
