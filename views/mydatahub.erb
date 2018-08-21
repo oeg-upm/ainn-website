@@ -1,3 +1,8 @@
-
-
-To be filled
+<p>
+<label for="organization_id">Select an organization: </label>
+<select class="ui dropdown" id='organization_id' name='organization_id' type='text'>
+  <% organization_list.each do |x| %>
+    <option value="<%= x['name']%>"> <%= x['name'] %> </option>
+  <% end %>
+</select>
+</p>
