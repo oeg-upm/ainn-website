@@ -19,8 +19,15 @@
 </form>
 
 <hr>
-<table>
-<% dataset_list.each do |dataset| %>
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Dataset Id</th>
+      <th>Request Annotation</th>
+      <th>Add Annotation</th>
+    </tr>
+  </thead>
+  <% dataset_list.each do |dataset| %>
   <tr>
     <td>
       <%= dataset['id'] %>
