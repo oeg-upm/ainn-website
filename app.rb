@@ -166,27 +166,54 @@ get "/home" do
 end
 
 CKAN_ORGANIZATION_LIST = 'http://83.212.100.226/ckan/api/action/organization_list?all_fields=true'
+MPE_DATASET_LIST = 'http://localhost:8092/datasets'
+
 get "/mydatahub" do
   puts "I am in mydatahub"
+
   uri = URI(CKAN_ORGANIZATION_LIST)
   res = Net::HTTP.get_response(uri)
-  puts res.body
-  puts res.code
+  organization_list = Array.new
   if res.code === "200"
     if valid_json?(res.body)
       j = JSON.parse(res.body)
-      return erb :mydatahub, :locals => {:organization_list => j["result"]}
+      organization_list = j["result"]
+      #return erb :mydatahub, :locals => {:organization_list => organization_list}
     else
-      return erb :msg, :locals => {:msg => "Internal Error"}
+      #return erb :msg, :locals => {:msg => "Internal Error"}
     end
   else
     if valid_json?(res.body)
       j = JSON.parse(res.body)
-      return erb :msg, :locals => {:msg => j["error"]}
+      #return erb :msg, :locals => {:msg => j["error"]}
     else
-      return erb :msg, :locals => {:msg => "Internal Error"}
+      #return erb :msg, :locals => {:msg => "Internal Error"}
     end
   end
+
+  uri = URI(MPE_DATASET_LIST)
+  res = Net::HTTP.get_response(uri)
+  dataset_list = Array.new
+  if res.code === "200"
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      dataset_list = j["results"]
+      #return erb :mydatahub, :locals => {:organization_list => organization_list}
+    else
+      #return erb :msg, :locals => {:msg => "Internal Error"}
+    end
+  else
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      #return erb :msg, :locals => {:msg => j["error"]}
+    else
+      #return erb :msg, :locals => {:msg => "Internal Error"}
+    end
+  end
+
+  return erb :mydatahub, :locals => {:organization_list => organization_list, :dataset_list => dataset_list}
+
+
 end
 
 get "/" do
