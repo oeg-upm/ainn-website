@@ -7,8 +7,6 @@
   <% end %>
 </select>
 </p>
-
-
 <p>
   <label for="distribution_download_url">Download URL of the new dataset: </label>
   <input type="text" name="distribution_download_url">
@@ -19,3 +17,20 @@
 </p>
 
 </form>
+
+<hr>
+<table>
+<% dataset_list.each do |dataset| %>
+  <tr>
+    <td>
+      <%= dataset['id'] %>
+    </td>
+    <td>
+      Request Annotation
+    </td>
+    <td>
+      Add Annotation
+    </td>
+  </tr>
+<% end %>
+</table>
