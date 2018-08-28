@@ -84,6 +84,22 @@ rescue JSON::ParserError => e
   return false
 end
 
+def call_tada(name, csv_url)
+  uri = URI('http://tadaa.linkeddata.es/api/type_entity_col')
+  res = Net::HTTP.post_form(uri, 'csv_url' => csv_url, 'name' => name)
+  puts res.body
+  puts res.code
+  if res.code === "200"
+    return ""
+  else
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      return j["error"]
+    else
+      return "Server error"
+    end
+  end
+end
 
 get "/login" do
   puts "I am in login"
@@ -138,14 +154,14 @@ post "/dataset" do
   distribution_download_url = params[:distribution_download_url]
   uri = URI(MPE_DATASET_ADD + "/" + organization_id)
   res = Net::HTTP.post_form(uri, 'distribution_download_url' => distribution_download_url)
-
   puts res.body
   puts res.code
   if res.code === "200"
     if valid_json?(res.body)
       j = JSON.parse(res.body)
       dataset_id = j["dataset_id"]
-      return erb :msg, :locals => {:msg => "Dataset " + dataset_id + " is created successfully", :organization_id => organization_id}
+      tada_err_msg = call_tada("marketplace_"+dataset_id, distribution_download_url)
+      return erb :msg, :locals => {:msg => "Dataset " + dataset_id + " is created successfully, "+tada_err_msg, :organization_id => organization_id}
     else
       return erb :msg, :locals => {:msg => "Internal Error"}
     end
