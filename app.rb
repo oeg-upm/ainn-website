@@ -85,6 +85,9 @@ rescue JSON::ParserError => e
 end
 
 def call_tada(name, csv_url)
+    # tada is being used by the experiment, we will enable it later on
+    # To enable it, just comment the below return
+  return ""
   uri = URI('http://tadaa.linkeddata.es/api/type_entity_col')
   res = Net::HTTP.post_form(uri, 'csv_url' => csv_url, 'name' => name)
   puts res.body
