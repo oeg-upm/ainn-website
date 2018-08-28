@@ -243,6 +243,13 @@ get "/about" do
   erb :about
 end
 
+get "/annotations" do
+  datasetid = params[:datasetid]
+  requestid = params[:requestid]
+
+  return erb :annotations, :locals => {:datasetid => datasetid, :requestid => requestid}
+end
+
 get "/requests" do
   datasetid = params[:datasetid]
   puts "datasetid in request "
@@ -252,6 +259,7 @@ get "/requests" do
   request{
     edges{
       node{
+        id
         description
         requestedOn
         datasetId

@@ -1,45 +1,58 @@
 <form method="POST" action="/annotations">
-<p>
-<label for="dataset_select_id">Select a Dataset: </label>
-<select class="ui dropdown" id='dataset_select_id' name='dataset_id' type='text'>
-  <% dataset_list.each do |x| %>
-    <option value="<%= x['id']%>"> <%= x['id'] %> </option>
+
+<div class="ui input">
+  <p>
+  <label for="dataset_select_id">Dataset Id: </label>
+  <% if defined?(datasetid)  %>
+    <input type="ui input" name="datasetid" value="<%= datasetid %>" placeholder="Dataset Id"/>
+  <% else %>
+    <input type="ui input" name="datasetid" placeholder="Enter the dataset ID"/>
   <% end %>
-</select>
 </p>
+
 <p>
-  <label for="mapping_download_url">Download URL of the new mapping: </label>
-  <input type="text" name="mapping_download_url">
+
+  <label for="request_id">Request Id: </label>
+  <% if defined?(requestid)  %>
+    <input type="ui input" name="requestid" value="<%= requestid %>" placeholder="Request Id"/>
+  <% else %>
+    <input type="ui input" name="requestid" placeholder="Request Id"/>
+  <% end %>
 </p>
+
+</div>
+<br>
+
+
+
+
+<input type="radio" name="mappingoption" value="byurl" checked> URL
+<div class="ui input">
+  <input type="ui input" name="mapping_url" placeholder="Annotation URL"/><br>
+</div>
+<br>
+
+<input type="radio" name="mappingoption" value="byfile"> File
+<button class="ui button">
+  Upload
+</button>
+<br>
+
+<input type="radio" name="mappingoption" value="byeditor"> Mapping Editor
+<button class="ui button">
+  Open Mapping Editor
+</button>
+<br>
+
+<input type="radio" name="mappingoption" value="bytada"> TADA<br>
+
+
+
 
 <p>
   <input class="ui fluid large teal submit secondary button" type="submit" name="Add" value="Go"/>
-
 </p>
 
 </form>
 
 <hr>
-<table class="ui celled table">
-  <thead>
-    <tr>
-      <th>Dataset Id</th>
-      <th>Request Annotation</th>
-      <th>Add Annotation</th>
-    </tr>
-  </thead>
-  <% dataset_list.each do |dataset| %>
-  <tr>
-    <td>
-      <%= dataset['id'] %>
-    </td>
-    <td>
-      <a href="requests?datasetid=<%= dataset['id'] %>">Request Annotation</a>
-
-    </td>
-    <td>
-      Add Annotation
-    </td>
-  </tr>
-<% end %>
-</table>
