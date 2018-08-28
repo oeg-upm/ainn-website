@@ -5,14 +5,23 @@
 <h1>New Request</h1>
 <form class="ui form" action="request" method="POST">
   <div class="field">
-    <label>Description</label>
-    <input type="text" name="description" placeholder="Enter the description ehre "/>
+    <label>Request Description</label>
+    <input type="text" name="description" placeholder="Enter the request description here "/>
   </div>
   <div class="field">
     <label>Dataset ID</label>
-    <input type="text" name="datasetid" placeholder="Enter the dataset ID"/>
+    <% if defined?(datasetid)  %>
+      <input type="text" name="datasetid" value="<%= datasetid %>" placeholder="Enter the dataset ID"/>
+    <% else %>
+      <input type="text" name="datasetid" placeholder="Enter the dataset ID"/>
+    <% end %>
+
   </div>
-  <input class="ui fluid large teal submit secondary button" type="submit" name="Add" value="Add"/>
+  <div class="field">
+    <label>Request Budget</label>
+    <input type="text" name="requestbudget" placeholder="Enter the budget for this request"/>
+  </div>
+  <input class="ui fluid large teal submit secondary button" type="submit" name="Add" value="Create New Request"/>
 </form>
 
 
