@@ -331,9 +331,9 @@ end
 post "/upload" do
     tempfile = params[:file][:tempfile]
     filename = params[:file][:filename]
-    mapping_id = params[:mapping_id]
-    puts "mapping id: "
-    puts mapping_id
+    dataset_id = params[:dataset_id]
+    puts "dataset_id: "
+    puts dataset_id
     cp(tempfile.path, "uploads/#{filename}")
     return erb :msg, :locals => {:msg => "Done"}
 end
