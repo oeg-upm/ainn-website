@@ -1,50 +1,65 @@
-<form method="POST" action="/annotations">
+<form class="ui form" method="POST" action="annotations">
 
-<div class="ui input">
-  <p>
+<div class="inline fields">
   <label for="dataset_select_id">Dataset Id: </label>
   <% if defined?(datasetid)  %>
-    <input type="ui input" name="datasetid" value="<%= datasetid %>" placeholder="Dataset Id"/>
+    <input type="text" name="datasetid" value="<%= datasetid %>" placeholder="Dataset Id"/>
   <% else %>
-    <input type="ui input" name="datasetid" placeholder="Enter the dataset ID"/>
+    <input type="text" name="datasetid" placeholder="Enter the dataset ID"/>
   <% end %>
-</p>
+</div>
 
-<p>
-
+<div class="inline fields">
   <label for="request_id">Request Id: </label>
   <% if defined?(requestid)  %>
-    <input type="ui input" name="requestid" value="<%= requestid %>" placeholder="Request Id"/>
+    <input type="text" name="requestid" value="<%= requestid %>" placeholder="Request Id"/>
   <% else %>
-    <input type="ui input" name="requestid" placeholder="Request Id"/>
+    <input type="text" name="requestid" placeholder="Request Id"/>
   <% end %>
-</p>
-
 </div>
 <br>
 
-
-
-
-<input type="radio" name="mappingoption" value="byurl" checked> URL
-<div class="ui input">
-  <input type="ui input" name="mapping_url" placeholder="Annotation URL"/><br>
+<div class="grouped fields">
+  <label for="mappingoption">Specify the annotations:</label>
+  <div class="field">
+    <div class="ui radio checkbox">
+      <input type="radio" name="mappingoption" checked="" tabindex="0" class="hidden" value="byurl" >
+      <label>URL</label>
+    </div>
+    <div class="inline fields">
+      <input type="text" name="mapping_url" placeholder="Annotation URL"/>
+    </div>
+  </div>
+  <div class="field">
+    <div class="ui radio checkbox">
+      <input type="radio" name="mappingoption" tabindex="0" class="hidden" value="byfile">
+      <label>File</label>
+    </div>
+    <button class="ui button">
+      Upload
+    </button>
+  </div>
+  <div class="field">
+    <div class="ui radio checkbox">
+      <input type="radio" name="mappingoption" tabindex="0" class="hidden" value="byeditor">
+      <label>Mapping Editor</label>
+    </div>
+    <button class="ui button">
+      Open Mapping Editor
+    </button>
+  </div>
+  <div class="field">
+    <div class="ui radio checkbox">
+      <input type="radio" name="mappingoption" tabindex="0" class="hidden" value="bytada">
+      <label>TADA</label>
+    </div>
+  </div>
 </div>
-<br>
 
-<input type="radio" name="mappingoption" value="byfile"> File
-<button class="ui button">
-  Upload
-</button>
-<br>
 
-<input type="radio" name="mappingoption" value="byeditor"> Mapping Editor
-<button class="ui button">
-  Open Mapping Editor
-</button>
-<br>
 
-<input type="radio" name="mappingoption" value="bytada"> TADA<br>
+
+
 
 
 
