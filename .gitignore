@@ -1,3 +1,4 @@
+/uploads
 .vagrant*
 .DS_Store
 *.log

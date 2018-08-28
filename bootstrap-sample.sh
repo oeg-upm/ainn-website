@@ -1,4 +1,4 @@
-export WORKSPACE=$HOME
+export WORKSPACE=/home/vagrant
 export USERHOME=$HOME
 ## Requests
 clear
@@ -75,11 +75,13 @@ sudo apt-get update
 sudo apt-get install rvm -y
 echo "source /etc/profile.d/rvm.sh" >> ~/.bash_profile
 cd $WORKSPACE/ainn-website
+mkdir uploads
 git pull
 /etc/profile.d/rvm.sh install ruby
 sudo gem install sinatra
 sudo gem install sinatra-reloader
 sudo gem install passenger
+gem install fileutils
 
 sudo apt-get install libcurl4-openssl-dev ruby-dev libssl-dev apache2-dev libapr1-dev libaprutil1-dev -y
 
@@ -102,3 +104,11 @@ CustomLog ${APACHE_LOG_DIR}/access.log combined
 EOT
 sudo a2dissite 000-default.conf
 sudo a2ensite ainnwebsite.conf
+
+
+# Set up OME
+echo "Setting up OME"
+cd $WORKSPACE; git clone https://github.com/oeg-upm/OME.git
+virtualenv -p /usr/bin/python2.7 .venv
+$WORKSPACE/OME/.venv/bin/pip install -r requirements.txt
+
