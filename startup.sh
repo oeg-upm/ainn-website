@@ -15,3 +15,10 @@ mvn clean install
 cd $WORKSPACE/mappingpedia-engine/mappingpedia-engine-datasets-ws
 git pull
 mvn clean spring-boot:run &
+cd $WORKSPACE/mappingpedia-engine/mappingpedia-engine-mappings
+git pull
+mvn clean install
+cd $WORKSPACE/mappingpedia-engine/mappingpedia-engine-mappings-ws
+git pull
+mvn clean spring-boot:run &
+
