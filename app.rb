@@ -252,7 +252,7 @@ get "/annotations" do
 end
 
 MPE_DATASET = 'http://localhost:8092/dataset'
-MPE_MAPPINGS = 'http://localhost:8092/mappings/'
+MPE_MAPPINGS = 'http://localhost:8094/mappings'
 
 post "/annotations" do
   displayname=session[:displayname]
@@ -271,26 +271,30 @@ post "/annotations" do
   puts res.body
   puts res.code
 
-  status = ""
+  organization_id = ""
   if res.code === "200"
     if valid_json?(res.body)
       j = JSON.parse(res.body)
-      status = j["status"]
+      organization_id = j["ckan_organization_id"]
+      puts organization_id
+
     else
       status = "Server error"
-    end  else
+      return erb :msg, :locals => {:msg => status}
+    end
+  else
     if valid_json?(res.body)
       j = JSON.parse(res.body)
       status = j["status"]
     else
       status = "Server error"
     end
+    return erb :msg, :locals => {:msg => status}
   end
-  return erb :msg, :locals => {:msg => status}
 
 
-  mpe_mappings_url = URI(MPE_MAPPINGS)
-  res = Net::HTTP.post_form(mpe_mappings_url, 'mapping_document_download_url' => mapping_url)
+  add_mappings_uri = URI(MPE_MAPPINGS + "/#{organization_id}/#{datasetid}")
+  res = Net::HTTP.post_form(add_mappings_uri, 'mapping_document_download_url' => mapping_url)
   status = ""
   if res.code === "200"
     if valid_json?(res.body)
@@ -298,7 +302,8 @@ post "/annotations" do
       status = j["status"]
     else
       status = "Server error"
-    end  else
+    end
+  else
     if valid_json?(res.body)
       j = JSON.parse(res.body)
       status = j["status"]
@@ -395,12 +400,3 @@ post "/upload" do
     cp(tempfile.path, "uploads/#{filename}")
     return erb :msg, :locals => {:msg => "Done"}
 end
-
-
-
-
-
-
-
-
-
