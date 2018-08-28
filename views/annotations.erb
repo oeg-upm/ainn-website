@@ -1,15 +1,28 @@
 <form method="POST" action="/annotations">
-<p>
-  <div class="ui input">
+
+<div class="ui input">
+  <p>
   <label for="dataset_select_id">Dataset Id: </label>
   <% if defined?(datasetid)  %>
-    <input type="ui input" name="datasetid" value="<%= datasetid %>" placeholder="Enter the dataset ID"/>
+    <input type="ui input" name="datasetid" value="<%= datasetid %>" placeholder="Dataset Id"/>
   <% else %>
     <input type="ui input" name="datasetid" placeholder="Enter the dataset ID"/>
   <% end %>
-</div>
+</p>
 
-  </p>
+<p>
+
+  <label for="request_id">Request Id: </label>
+  <% if defined?(requestid)  %>
+    <input type="ui input" name="requestid" value="<%= requestid %>" placeholder="Request Id"/>
+  <% else %>
+    <input type="ui input" name="requestid" placeholder="Request Id"/>
+  <% end %>
+</p>
+
+</div>
+<br>
+
 
 
 

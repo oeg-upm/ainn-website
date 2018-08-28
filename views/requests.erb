@@ -28,6 +28,7 @@
 <table class="ui celled table">
   <thead>
     <tr>
+      <th>Requested Id</th>
       <th>Requested On</th>
       <th>Description</th>
       <th>Dataset ID</th>
@@ -38,12 +39,13 @@
   <tbody>
     <% requests.each do |request| %>
     <tr>
+      <td><%= request["node"]["id"] %></td>
       <td><%= request["node"]["requestedOn"] %></td>
       <td><%= request["node"]["description"] %></td>
       <td><%= request["node"]["datasetId"] %></td>
       <td>View</td>
       <td>
-        <a href="annotations?datasetid=<%= request["node"]["datasetId"] %>">Answer Request</a>
+        <a href="annotations?datasetid=<%=request["node"]["datasetId"]%>&requestid=<%=request["node"]["id"]%>">Answer Request</a>
       </td>
     </tr>
     <%end %>
