@@ -153,12 +153,12 @@ post "/register" do
   end
 end
 
-MPE_DATASET_ADD = 'http://localhost:8092/datasets/'
+MPE_DATASETS = 'http://localhost:8092/datasets/'
 post "/dataset" do
   organization_id = params[:organization_id]
   distribution_download_url = params[:distribution_download_url]
-  uri = URI(MPE_DATASET_ADD + "/" + organization_id)
-  res = Net::HTTP.post_form(uri, 'distribution_download_url' => distribution_download_url)
+  uri = URI(MPE_DATASETS + "/" + organization_id)
+  res = Net::HTTP.post_form(uri, 'distribution_download_url' => distribution_download_url, 'ckan_organization_id' => organization_id, 'ckan_organization_name' => organization_id )
   puts res.body
   puts res.code
   if res.code === "200"
@@ -187,7 +187,6 @@ get "/home" do
 end
 
 CKAN_ORGANIZATION_LIST = 'http://83.212.100.226/ckan/api/action/organization_list?all_fields=true'
-MPE_DATASET_LIST = 'http://localhost:8092/datasets'
 
 get "/mydatahub" do
   puts "I am in mydatahub"
@@ -212,7 +211,7 @@ get "/mydatahub" do
     end
   end
 
-  uri = URI(MPE_DATASET_LIST)
+  uri = URI(MPE_DATASETS)
   res = Net::HTTP.get_response(uri)
   dataset_list = Array.new
   if res.code === "200"
@@ -250,6 +249,70 @@ get "/annotations" do
   requestid = params[:requestid]
 
   return erb :annotations, :locals => {:datasetid => datasetid, :requestid => requestid}
+end
+
+MPE_DATASET = 'http://localhost:8092/dataset'
+MPE_MAPPINGS = 'http://localhost:8094/mappings'
+
+post "/annotations" do
+  displayname=session[:displayname]
+  datasetid=params[:datasetid]
+  requestid=params[:requestid]
+  mapping_url=params[:mapping_url]
+
+  puts displayname
+  puts datasetid
+  puts requestid
+  puts mapping_url
+
+  mpe_dataset_uri = URI(MPE_DATASET + '?dataset_id=' + datasetid)
+  res = Net::HTTP.get_response(mpe_dataset_uri)
+  status = ""
+  puts res.body
+  puts res.code
+
+  organization_id = ""
+  if res.code === "200"
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      organization_id = j["ckan_organization_id"]
+      puts organization_id
+
+    else
+      status = "Server error"
+      return erb :msg, :locals => {:msg => status}
+    end
+  else
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      status = j["status"]
+    else
+      status = "Server error"
+    end
+    return erb :msg, :locals => {:msg => status}
+  end
+
+
+  add_mappings_uri = URI(MPE_MAPPINGS + "/#{organization_id}/#{datasetid}")
+  res = Net::HTTP.post_form(add_mappings_uri, 'mapping_document_download_url' => mapping_url)
+  status = ""
+  if res.code === "200"
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      status = j["status"]
+    else
+      status = "Server error"
+    end
+  else
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      status = j["status"]
+    else
+      status = "Server error"
+    end
+  end
+
+return erb :msg, :locals => {:msg => status}
 end
 
 get "/requests" do
@@ -337,12 +400,3 @@ post "/upload" do
     cp(tempfile.path, "uploads/#{filename}")
     return erb :msg, :locals => {:msg => "Done"}
 end
-
-
-
-
-
-
-
-
-
