@@ -42,7 +42,9 @@
       <td><%= request["node"]["description"] %></td>
       <td><%= request["node"]["datasetId"] %></td>
       <td>View</td>
-      <td>Answer</td>
+      <td>
+        <a href="annotations?datasetid=<%= request["node"]["datasetId"] %>">Answer Request</a>
+      </td>
     </tr>
     <%end %>
   </tbody>

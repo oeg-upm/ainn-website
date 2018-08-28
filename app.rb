@@ -243,6 +243,12 @@ get "/about" do
   erb :about
 end
 
+get "/annotations" do
+  datasetid = params[:datasetid]
+
+  return erb :annotations, :locals => {:datasetid => datasetid}
+end
+
 get "/requests" do
   datasetid = params[:datasetid]
   puts "datasetid in request "
