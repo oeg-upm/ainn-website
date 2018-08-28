@@ -75,11 +75,13 @@ sudo apt-get update
 sudo apt-get install rvm -y
 echo "source /etc/profile.d/rvm.sh" >> ~/.bash_profile
 cd $WORKSPACE/ainn-website
+mkdir uploads
 git pull
 /etc/profile.d/rvm.sh install ruby
 sudo gem install sinatra
 sudo gem install sinatra-reloader
 sudo gem install passenger
+gem install fileutils
 
 sudo apt-get install libcurl4-openssl-dev ruby-dev libssl-dev apache2-dev libapr1-dev libaprutil1-dev -y
 

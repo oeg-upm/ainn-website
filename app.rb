@@ -1,5 +1,7 @@
 require "sinatra"
 require 'net/http'
+require "fileutils"
+include FileUtils::Verbose
 
 # so sinatra will reload whenever a new changes happen
 
@@ -28,7 +30,7 @@ before '/:relativepath' do
   session[:displayname] ||= ""
   if session[:displayname] == ""
     puts "session is empty"
-    if relativepath != "login" && relativepath != "register" && relativepath != "about"
+    if relativepath != "login" && relativepath != "register" && relativepath != "about" && relativepath != "upload"
       puts "not login: "
       redirect "/login"
     else
@@ -325,3 +327,22 @@ post "/request" do
     end
   end
 end
+
+post "/upload" do
+    tempfile = params[:file][:tempfile]
+    filename = params[:file][:filename]
+    mapping_id = params[:mapping_id]
+    puts "mapping id: "
+    puts mapping_id
+    cp(tempfile.path, "uploads/#{filename}")
+    return erb :msg, :locals => {:msg => "Done"}
+end
+
+
+
+
+
+
+
+
+
