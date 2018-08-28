@@ -1,4 +1,4 @@
-export WORKSPACE=$HOME
+export WORKSPACE=/home/vagrant
 export USERHOME=$HOME
 ## Requests
 clear
@@ -102,3 +102,11 @@ CustomLog ${APACHE_LOG_DIR}/access.log combined
 EOT
 sudo a2dissite 000-default.conf
 sudo a2ensite ainnwebsite.conf
+
+
+# Set up OME
+echo "Setting up OME"
+cd $WORKSPACE; git clone https://github.com/oeg-upm/OME.git
+virtualenv -p /usr/bin/python2.7 .venv
+$WORKSPACE/OME/.venv/bin/pip install -r requirements.txt
+

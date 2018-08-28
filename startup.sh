@@ -6,6 +6,7 @@ sudo mongod --config /etc/mongod.conf &
 sudo chown $USER -R $WORKSPACE
 cd $WORKSPACE/ainn-userm; go build; ./ainn-userm &
 cd $WORKSPACE/ainn-request/; .venv/bin/python app.py &
+cd $WORKSPACE/OME/; .venv/bin/python app.py 5001 &
 cd $WORKSPACE/mappingpedia-engine/mappingpedia-engine-commons
 git pull
 mvn clean install
