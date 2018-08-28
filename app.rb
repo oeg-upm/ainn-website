@@ -241,6 +241,10 @@ get "/about" do
 end
 
 get "/requests" do
+  datasetid = params[:datasetid]
+  puts "datasetid in request "
+  puts datasetid
+
   query = '{
   request{
     edges{
@@ -256,11 +260,12 @@ get "/requests" do
   res = Net::HTTP.get_response(uri)
   puts res.body
   puts res.code
+
   if res.code === "200"
     puts 'will check the results'
     if valid_json?(res.body)
       j = JSON.parse(res.body)
-      return erb :requests, :locals => {:requests => j["data"]["request"]["edges"]}
+      return erb :requests, :locals => {:requests => j["data"]["request"]["edges"], :datasetid => datasetid}
     else
       return erb :msg, :locals => {:msg => "Internal Error"}
     end

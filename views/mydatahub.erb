@@ -13,7 +13,8 @@
 </p>
 
 <p>
-  <input type="submit">
+  <input class="ui fluid large teal submit secondary button" type="submit" name="Add" value="Create New Dataset"/>
+
 </p>
 
 </form>
@@ -33,7 +34,8 @@
       <%= dataset['id'] %>
     </td>
     <td>
-      Request Annotation
+      <a href="requests?datasetid=<%= dataset['id'] %>">Request Annotation</a>
+
     </td>
     <td>
       Add Annotation
