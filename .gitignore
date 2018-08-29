@@ -1,3 +1,4 @@
+uploads/*.r2rml
 .vagrant*
 .DS_Store
 *.log
