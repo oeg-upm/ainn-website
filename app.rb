@@ -244,11 +244,35 @@ get "/about" do
   erb :about
 end
 
+MPE_DISTRIBUTIONS = 'http://localhost:8092/distributions'
 get "/annotations" do
   datasetid = params[:datasetid]
   requestid = params[:requestid]
-
-  return erb :annotations, :locals => {:datasetid => datasetid, :requestid => requestid}
+  puts "the distribution url: "
+  puts MPE_DISTRIBUTIONS + "?dataset_id=" + datasetid
+  mpe_dataset_uri = URI(MPE_DISTRIBUTIONS + "?dataset_id=" + datasetid)
+  res = Net::HTTP.get_response(mpe_dataset_uri)
+  status = ""
+  puts res.body
+  puts res.code
+  if res.code === "200"
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      if j["count"] == 1
+        download_url = j["results"][0]["download_url"]
+        return erb :annotations, :locals => {:datasetid => datasetid, :requestid => requestid, :source => download_url}
+      else
+        puts "count is: "
+        puts j["count"]
+        return erb :msg, :locals => {:msg => "Internal Error: we are only supporting one distribution per dataset"}
+      end
+    else
+      return erb :msg, :locals => {:msg => "Internal Error: error getting the distributions, invalid json"}
+    end
+  else
+    return erb :msg, :locals => {:msg => "Internal Error: error getting the distributions, not 200"}
+  end
+  #return erb :annotations, :locals => {:datasetid => datasetid, :requestid => requestid}
 end
 
 MPE_DATASET = 'http://localhost:8092/dataset'
