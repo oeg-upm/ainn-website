@@ -1,74 +1,96 @@
-<form class="ui form" method="POST" action="annotations">
 
-<div class="inline fields">
-  <label for="dataset_select_id">Dataset Id: </label>
-  <% if defined?(datasetid)  %>
-    <input type="text" name="datasetid" value="<%= datasetid %>" placeholder="Dataset Id"/>
-  <% else %>
-    <input type="text" name="datasetid" placeholder="Enter the dataset ID"/>
-  <% end %>
+
+<div class="ui three item menu">
+  <a id="atab1" class="active item" href="javascript:void(0);" onclick="switch_to_tab('tab1');">Provide Mapping URL</a>
+  <a id="atab2" class="item" href="javascript:void(0);" onclick="switch_to_tab('tab2');" >Upload Mapping File</a>
+  <a id="atab3" class="item" href="javascript:void(0);" onclick="switch_to_tab('tab3');">Use Mapping Editor</a>
 </div>
 
-<div class="inline fields">
-  <label for="request_id">Request Id: </label>
-  <% if defined?(requestid)  %>
-    <input type="text" name="requestid" value="<%= requestid %>" placeholder="Request Id"/>
-  <% else %>
-    <input type="text" name="requestid" placeholder="Request Id"/>
-  <% end %>
-</div>
-<br>
-
-<div class="grouped fields">
-  <label for="mappingoption">Specify the annotations:</label>
-  <div class="field">
-    <div class="ui radio checkbox">
-      <input type="radio" name="mappingoption" checked="" tabindex="0" class="hidden" value="byurl" >
-      <label>URL</label>
-    </div>
+<div id="tab1">
+  <h2>Add Mapping URL</h2>
+  <form class="ui form" method="POST" action="annotations">
     <div class="inline fields">
+      <label for="dataset_select_id">Dataset Id: </label>
+      <% if defined?(datasetid)  %>
+      <input type="text" name="datasetid" value="<%= datasetid %>" placeholder="Dataset Id"/>
+      <% else %>
+      <input type="text" name="datasetid" placeholder="Enter the dataset ID"/>
+      <% end %>
+    </div>
+
+    <div class="inline fields">
+      <label for="request_id">Request Id: </label>
+      <% if defined?(requestid)  %>
+      <input type="text" name="requestid" value="<%= requestid %>" placeholder="Request Id"/>
+      <% else %>
+      <input type="text" name="requestid" placeholder="Request Id"/>
+      <% end %>
+    </div>
+
+    <div class="field">
+      <label>URL</label>
       <input type="text" name="mapping_url" placeholder="Annotation URL"/>
     </div>
-  </div>
-  <div class="field">
-    <div class="ui radio checkbox">
-      <input type="radio" name="mappingoption" tabindex="0" class="hidden" value="byfile">
+    <input class="ui fluid large teal submit secondary button" type="submit" name="Add" value="Add"/>
+  </form>
+
+</div>
+<div id="tab2">
+  <h2>Upload Mapping File</h2>
+  <form class="ui form" method="POST" action="annotations">
+    <div class="inline fields">
+      <label for="dataset_select_id">Dataset Id: </label>
+      <% if defined?(datasetid)  %>
+      <input type="text" name="datasetid" value="<%= datasetid %>" placeholder="Dataset Id"/>
+      <% else %>
+      <input type="text" name="datasetid" placeholder="Enter the dataset ID"/>
+      <% end %>
+    </div>
+
+    <div class="inline fields">
+      <label for="request_id">Request Id: </label>
+      <% if defined?(requestid)  %>
+      <input type="text" name="requestid" value="<%= requestid %>" placeholder="Request Id"/>
+      <% else %>
+      <input type="text" name="requestid" placeholder="Request Id"/>
+      <% end %>
+    </div>
+
+    <!-- <label for="file" class="ui button">
+        <i class="file"></i>
+        Open File</label>
+    <input type="file" id="file" style="display:none"> -->
+    <div class="field">
       <label>File</label>
+      <input type="file"/>
     </div>
-    <button class="ui button">
-      Upload
-    </button>
-  </div>
-  <div class="field">
-    <div class="ui radio checkbox">
-      <input type="radio" name="mappingoption" tabindex="0" class="hidden" value="byeditor">
-      <label>Mapping Editor</label>
-    </div>
-    <a target="_blank" href="http://127.0.0.1:5000/editor?source=<%=source%>&callback=http://127.0.0.1:8080/upload?dataset_id=<%=datasetid%>">Open editor</a>
-    <button class="ui button">
-      Open Mapping Editor
-    </button>
-  </div>
-  <div class="field">
-    <div class="ui radio checkbox">
-      <input type="radio" name="mappingoption" tabindex="0" class="hidden" value="bytada">
-      <label>TADA</label>
-    </div>
-  </div>
+    <input class="ui fluid large teal submit secondary button" type="submit" name="Add" value="Add"/>
+
+  </form>
+</div>
+<div id="tab3">
+  <h2>Mapping Editor</h2>
+  <p>Click <a target="_blank" href="http://127.0.0.1:5000/editor?source=<%=source%>&callback=http://127.0.0.1:8080/upload?dataset_id=<%=datasetid%>">here</a> to open in another window</p>
+  <embed id="editor"  width="100%" src="http://127.0.0.1:5000/editor?source=<%=source%>&callback=http://127.0.0.1:8080/upload?dataset_id=<%=datasetid%>"/>
 </div>
 
+<script>
+document.getElementById("editor").height=""+window.innerHeight+"px";
 
-
-
-
-
-
-
-
-<p>
-  <input class="ui fluid large teal submit secondary button" type="submit" name="Add" value="Go"/>
-</p>
-
-</form>
+var all_tabs = ["tab1", "tab2", "tab3"]
+var tab_div;
+function switch_to_tab(tab_id){
+  // for each (var tab in all_tabs) {
+  for(var i=0;i<all_tabs.length;i++) {
+    tab = all_tabs[i];
+    tab_div = document.getElementById(tab);
+    tab_div.style.display ='none';
+    document.getElementById("a"+tab).classList.remove("active");
+  }
+  tab_div = document.getElementById(tab_id);
+  tab_div.style.display = 'block';
+  document.getElementById("a"+tab_id).classList.add("active");
+}
+</script>
 
 <hr>
