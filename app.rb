@@ -91,7 +91,7 @@ end
 def call_tada(name, csv_url)
   # tada is being used by the experiment, we will enable it later on
   # To enable it, just comment the below return
-  return ""
+  # return ""
   uri = URI('http://tadaa.linkeddata.es/api/type_entity_col')
   res = Net::HTTP.post_form(uri, 'csv_url' => csv_url, 'name' => name)
   puts res.body
@@ -220,6 +220,24 @@ get "/mydatahub" do
     if valid_json?(res.body)
       j = JSON.parse(res.body)
       dataset_list = j["results"]
+      k = dataset_list.length
+      puts "dataset length: "
+      puts k
+      for i in 0...k
+        puts "loop dataset id: "
+        puts dataset_list[i]
+        puts dataset_list[i]["id"]
+        u = "http://tadaa.linkeddata.es/api/check_status?name="+"marketplace_"+dataset_list[i]["id"]
+        uri = URI(u)
+        res_tada = Net::HTTP.get_response(uri)
+        if valid_json?(res_tada.body)
+          j2 = JSON.parse(res_tada.body)
+          dataset_list[i]["status"] = j2["status"]
+        else
+          dataset_list[i]["status"] = "-"
+        end
+        puts "LOOP Value of local variable is #{i}"
+      end
       #return erb :mydatahub, :locals => {:organization_list => organization_list}
     else
       #return erb :msg, :locals => {:msg => "Internal Error"}

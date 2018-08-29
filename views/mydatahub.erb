@@ -25,7 +25,7 @@
     <tr>
       <th>Dataset Id</th>
       <th>Request Annotation</th>
-      <th>Add Annotation</th>
+      <th>TADA (status)</th>
     </tr>
   </thead>
   <% dataset_list.each do |dataset| %>
@@ -38,7 +38,7 @@
 
     </td>
     <td>
-      Add Annotation
+      <%= dataset['status'] %>
     </td>
   </tr>
 <% end %>
