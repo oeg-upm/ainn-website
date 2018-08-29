@@ -81,8 +81,8 @@ git pull
 sudo gem install sinatra
 sudo gem install sinatra-reloader
 sudo gem install passenger
-gem install fileutils
-
+sudo gem install fileutils
+sudo gem install multipart-post
 sudo apt-get install libcurl4-openssl-dev ruby-dev libssl-dev apache2-dev libapr1-dev libaprutil1-dev -y
 
 # Set up Apache
