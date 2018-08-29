@@ -94,3 +94,22 @@ function switch_to_tab(tab_id){
 </script>
 
 <hr>
+
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Dataset Id</th>
+      <th>Annotation Id</th>
+    </tr>
+  </thead>
+  <% mappings.each do |mapping| %>
+  <tr>
+    <td>
+      <%= mapping['dataset_id'] %>
+    </td>
+    <td>
+      <%= mapping['id'] %>
+    </td>
+  </tr>
+<% end %>
+</table>

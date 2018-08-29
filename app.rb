@@ -87,8 +87,8 @@ rescue JSON::ParserError => e
 end
 
 def call_tada(name, csv_url)
-    # tada is being used by the experiment, we will enable it later on
-    # To enable it, just comment the below return
+  # tada is being used by the experiment, we will enable it later on
+  # To enable it, just comment the below return
   return ""
   uri = URI('http://tadaa.linkeddata.es/api/type_entity_col')
   res = Net::HTTP.post_form(uri, 'csv_url' => csv_url, 'name' => name)
@@ -248,30 +248,50 @@ MPE_DISTRIBUTIONS = 'http://localhost:8092/distributions'
 get "/annotations" do
   datasetid = params[:datasetid]
   requestid = params[:requestid]
-  puts "the distribution url: "
-  puts MPE_DISTRIBUTIONS + "?dataset_id=" + datasetid
-  mpe_dataset_uri = URI(MPE_DISTRIBUTIONS + "?dataset_id=" + datasetid)
-  res = Net::HTTP.get_response(mpe_dataset_uri)
-  status = ""
-  puts res.body
-  puts res.code
+  puts "datasetid = #{datasetid}"
+
+  download_url = nil
+  if defined?(datasetid) && datasetid != nil
+    puts MPE_DISTRIBUTIONS + "?dataset_id=" + datasetid
+    mpe_dataset_uri = URI(MPE_DISTRIBUTIONS + "?dataset_id=" + datasetid)
+    res = Net::HTTP.get_response(mpe_dataset_uri)
+    status = ""
+    puts res.body
+    puts res.code
+    if res.code === "200"
+      if valid_json?(res.body)
+        j = JSON.parse(res.body)
+        if j["count"] == 1
+          download_url = j["results"][0]["download_url"]
+        else
+          puts "count is: "
+          puts j["count"]
+          return erb :msg, :locals => {:msg => "Internal Error: we are only supporting one distribution per dataset"}
+        end
+      else
+        return erb :msg, :locals => {:msg => "Internal Error: error getting the distributions, invalid json"}
+      end
+    else
+      return erb :msg, :locals => {:msg => "Internal Error: error getting the distributions, not 200"}
+    end
+  end
+  puts "download_url = #{download_url}"
+
+  mpe_mappings_uri = URI(MPE_MAPPINGS)
+  res = Net::HTTP.get_response(mpe_mappings_uri)
   if res.code === "200"
     if valid_json?(res.body)
       j = JSON.parse(res.body)
-      if j["count"] == 1
-        download_url = j["results"][0]["download_url"]
-        return erb :annotations, :locals => {:datasetid => datasetid, :requestid => requestid, :source => download_url}
-      else
-        puts "count is: "
-        puts j["count"]
-        return erb :msg, :locals => {:msg => "Internal Error: we are only supporting one distribution per dataset"}
-      end
+      mappings = j["results"]
     else
       return erb :msg, :locals => {:msg => "Internal Error: error getting the distributions, invalid json"}
     end
   else
     return erb :msg, :locals => {:msg => "Internal Error: error getting the distributions, not 200"}
   end
+
+  return erb :annotations, :locals => {:datasetid => datasetid, :requestid => requestid, :source => download_url, :mappings => mappings}
+
   #return erb :annotations, :locals => {:datasetid => datasetid, :requestid => requestid}
 end
 
@@ -336,7 +356,7 @@ post "/annotations" do
     end
   end
 
-return erb :msg, :locals => {:msg => status}
+  return erb :msg, :locals => {:msg => status}
 end
 
 get "/requests" do
@@ -389,38 +409,38 @@ post "/request" do
   puts description
   query = "mutation{
   createRequest(requesterId:\"#{displayname}\", datasetId:\"#{datasetid}\", description:\"#{description}\"){
-    request{
-      id
-    }
+  request{
+    id
   }
-  }"
-  puts "the query is: "
-  puts query
-  uri = URI('http://127.0.0.1:5000/graphql?query='+query)
-  puts "the params: "
-  puts params
-  res = Net::HTTP.post_form(uri, params)
-  puts res.body
-  puts res.code
-  if res.code === "200"
-    puts '200 and redirect to requestsss'
-    redirect '/requests'
+}
+}"
+puts "the query is: "
+puts query
+uri = URI('http://127.0.0.1:5000/graphql?query='+query)
+puts "the params: "
+puts params
+res = Net::HTTP.post_form(uri, params)
+puts res.body
+puts res.code
+if res.code === "200"
+  puts '200 and redirect to requestsss'
+  redirect '/requests'
+else
+  if valid_json?(res.body)
+    j = JSON.parse(res.body)
+    return erb :msg, :locals => {:msg => j["error"]}
   else
-    if valid_json?(res.body)
-      j = JSON.parse(res.body)
-      return erb :msg, :locals => {:msg => j["error"]}
-    else
-      return erb :msg, :locals => {:msg => "Internal Error"}
-    end
+    return erb :msg, :locals => {:msg => "Internal Error"}
   end
+end
 end
 
 post "/upload" do
-    tempfile = params[:file][:tempfile]
-    filename = params[:file][:filename]
-    dataset_id = params[:dataset_id]
-    puts "dataset_id: "
-    puts dataset_id
-    cp(tempfile.path, "uploads/#{filename}")
-    return erb :msg, :locals => {:msg => "Done"}
+  tempfile = params[:file][:tempfile]
+  filename = params[:file][:filename]
+  dataset_id = params[:dataset_id]
+  puts "dataset_id: "
+  puts dataset_id
+  cp(tempfile.path, "uploads/#{filename}")
+  return erb :msg, :locals => {:msg => "Done"}
 end
