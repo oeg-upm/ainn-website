@@ -6,6 +6,8 @@ include FileUtils::Verbose
 # so sinatra will reload whenever a new changes happen
 
 require "sinatra/reloader"
+require "rubygems"
+require 'net/http/post/multipart'
 # require "sinatra/config_file"
 # config_file 'config.yml'
 #set :environment, :development
@@ -431,6 +433,7 @@ else
     return erb :msg, :locals => {:msg => j["error"]}
   else
     return erb :msg, :locals => {:msg => "Internal Error"}
+
   end
 end
 end
@@ -442,5 +445,39 @@ post "/upload" do
   puts "dataset_id: "
   puts dataset_id
   cp(tempfile.path, "uploads/#{filename}")
+  #get organization
+  mpe_dataset_uri = URI(MPE_DATASET + '?dataset_id=' + dataset_id)
+  res = Net::HTTP.get_response(mpe_dataset_uri)
+  status = ""
+  puts res.body
+  puts res.code
+  organization_id = ""
+  if res.code === "200"
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      organization_id = j["results"][0]["ckan_organization_name"]
+      puts "organization_id: "
+      puts organization_id
+      puts "MPE_MAPPINGS: "
+      puts MPE_MAPPINGS
+      puts "dataset_id: "
+      puts dataset_id
+      add_mappings_uri = URI(MPE_MAPPINGS + "/#{organization_id}/#{dataset_id}")
+      #add_mappings_uri = URI(MPE_MAPPINGS + "#{organization_id}/#{dataset_id}")
+      puts "add mappings uri:"
+      puts add_mappings_uri
+      #url = URI.parse(add_mappings_uri)
+      url = URI(add_mappings_uri)
+      req = Net::HTTP::Post::Multipart.new url.path,
+        "mapping_document_file" => UploadIO.new(File.new("uploads/#{filename}"), "application/txt")
+      res = Net::HTTP.start(url.host, url.port) do |http|
+        http.request(req)
+      end
+    else
+      puts "ERROR not valid json"
+    end
+  else
+    puts "ERROR not 200"
+  end
   return erb :msg, :locals => {:msg => "Done"}
 end
