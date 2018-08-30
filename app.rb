@@ -321,6 +321,7 @@ end
 MPE_DATASET = 'http://localhost:8092/dataset'
 MPE_MAPPINGS = 'http://localhost:8094/mappings'
 
+
 post "/annotations" do
   displayname=session[:displayname]
   datasetid=params[:datasetid]
@@ -498,4 +499,35 @@ post "/upload" do
     puts "ERROR not 200"
   end
   return erb :msg, :locals => {:msg => "Done"}
+end
+
+MPE_EXECUTIONS = 'http://localhost:8096/executions'
+
+get "/executions" do
+  datasetid = params[:datasetid]
+  mappingid = params[:mappingid]
+
+  executionuri = MPE_EXECUTIONS + "?dataset_id=#{datasetid}&mapping_document_id=#{mappingid}"
+  puts "executionuri = #{executionuri}"
+
+  executionuri = URI(executionuri)
+  res = Net::HTTP.get_response(executionuri)
+  status = ""
+  execution_result_url = ""
+  puts res.body
+  puts res.code
+  if res.code === "200"
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      execution_result_url = j["mapping_execution_result_download_url"]
+
+      status = "OK, the result can be retrieved from: #{execution_result_url}"
+    else
+      status = "OK"
+    end
+  else
+    status = "Internal Error"
+  end
+
+  return erb :msg, :locals => {:msg => status}
 end
