@@ -138,7 +138,25 @@ get "/register" do
 end
 
 get "/instances" do
-  erb :instances
+  classname = ""
+  if defined?(params[:classname])
+    classname = params[:classname]
+  end
+
+  getinstancesuri = MPE_EXECUTIONS + "/instances?class_name=#{classname}"
+  puts "getinstancesuri = #{getinstancesuri}"
+
+  res = Net::HTTP.get_response(URI(getinstancesuri))
+  instances = ""
+  puts res.body
+  puts res.code
+  if res.code === "200" && valid_json?(res.body)
+      j = JSON.parse(res.body)
+      instances = j["results"]
+  end
+
+  return erb :instances, :locals => {:instances => instances}
+
 end
 
 post "/register" do
@@ -501,17 +519,16 @@ post "/upload" do
   return erb :msg, :locals => {:msg => "Done"}
 end
 
-MPE_EXECUTIONS = 'http://localhost:8096/executions'
+MPE_EXECUTIONS = 'http://localhost:8096'
 
 get "/executions" do
   datasetid = params[:datasetid]
   mappingid = params[:mappingid]
 
-  executionuri = MPE_EXECUTIONS + "?dataset_id=#{datasetid}&mapping_document_id=#{mappingid}"
+  executionuri = MPE_EXECUTIONS + "/executions?dataset_id=#{datasetid}&mapping_document_id=#{mappingid}"
   puts "executionuri = #{executionuri}"
 
-  executionuri = URI(executionuri)
-  res = Net::HTTP.get_response(executionuri)
+  res = Net::HTTP.get_response(URI(executionuri))
   status = ""
   execution_result_url = ""
   puts res.body
