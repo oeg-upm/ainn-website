@@ -176,11 +176,11 @@ post "/register" do
   end
 end
 
-MPE_DATASETS = 'http://localhost:8092/datasets/'
+MPE_DATASETS = 'http://localhost:8092'
 post "/dataset" do
   organization_id = params[:organization_id]
   distribution_download_url = params[:distribution_download_url]
-  uri = URI(MPE_DATASETS + "/" + organization_id)
+  uri = URI(MPE_DATASETS + "/datasets/" + organization_id)
   res = Net::HTTP.post_form(uri, 'distribution_download_url' => distribution_download_url, 'ckan_organization_id' => organization_id, 'ckan_organization_name' => organization_id )
   puts res.body
   puts res.code
@@ -234,7 +234,7 @@ get "/mydatahub" do
     end
   end
 
-  uri = URI(MPE_DATASETS)
+  uri = URI(MPE_DATASETS + "/datasets/")
   res = Net::HTTP.get_response(uri)
   dataset_list = Array.new
   if res.code === "200"
@@ -336,7 +336,6 @@ get "/annotations" do
   #return erb :annotations, :locals => {:datasetid => datasetid, :requestid => requestid}
 end
 
-MPE_DATASET = 'http://localhost:8092/dataset'
 MPE_MAPPINGS = 'http://localhost:8094'
 
 
@@ -351,7 +350,7 @@ post "/annotations" do
   puts requestid
   puts mapping_url
 
-  mpe_dataset_uri = URI(MPE_DATASET + '?dataset_id=' + datasetid)
+  mpe_dataset_uri = URI(MPE_DATASETS + '/dataset?dataset_id=' + datasetid)
   res = Net::HTTP.get_response(mpe_dataset_uri)
   status = ""
   puts res.body
