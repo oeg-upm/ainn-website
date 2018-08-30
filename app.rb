@@ -388,17 +388,14 @@ get "/requests" do
   puts datasetid
 
   query = '{
-  request{
-    edges{
-      node{
-        id
-        description
-        requestedOn
-        datasetId
-      }
-    }
+  request {
+    id
+    description
+    requestedOn
+    datasetId
   }
-  }'
+}
+'
   uri = URI('http://127.0.0.1:5000/graphql?query='+query)
   res = Net::HTTP.get_response(uri)
   puts res.body
