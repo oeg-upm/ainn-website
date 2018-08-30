@@ -138,7 +138,25 @@ get "/register" do
 end
 
 get "/instances" do
-  erb :instances
+  classname = ""
+  if defined?(params[:classname])
+    classname = params[:classname]
+  end
+
+  getinstancesuri = MPE_EXECUTIONS + "/instances?class_name=#{classname}"
+  puts "getinstancesuri = #{getinstancesuri}"
+
+  res = Net::HTTP.get_response(URI(getinstancesuri))
+  instances = ""
+  puts res.body
+  puts res.code
+  if res.code === "200" && valid_json?(res.body)
+      j = JSON.parse(res.body)
+      instances = j["results"]
+  end
+
+  return erb :instances, :locals => {:instances => instances}
+
 end
 
 post "/register" do
@@ -158,11 +176,11 @@ post "/register" do
   end
 end
 
-MPE_DATASETS = 'http://localhost:8092/datasets/'
+MPE_DATASETS = 'http://localhost:8092'
 post "/dataset" do
   organization_id = params[:organization_id]
   distribution_download_url = params[:distribution_download_url]
-  uri = URI(MPE_DATASETS + "/" + organization_id)
+  uri = URI(MPE_DATASETS + "/datasets/" + organization_id)
   res = Net::HTTP.post_form(uri, 'distribution_download_url' => distribution_download_url, 'ckan_organization_id' => organization_id, 'ckan_organization_name' => organization_id )
   puts res.body
   puts res.code
@@ -216,7 +234,7 @@ get "/mydatahub" do
     end
   end
 
-  uri = URI(MPE_DATASETS)
+  uri = URI(MPE_DATASETS + "/datasets/")
   res = Net::HTTP.get_response(uri)
   dataset_list = Array.new
   if res.code === "200"
@@ -300,7 +318,7 @@ get "/annotations" do
   end
   puts "download_url = #{download_url}"
 
-  mpe_mappings_uri = URI(MPE_MAPPINGS)
+  mpe_mappings_uri = URI(MPE_MAPPINGS + "/mappings")
   res = Net::HTTP.get_response(mpe_mappings_uri)
   if res.code === "200"
     if valid_json?(res.body)
@@ -318,8 +336,8 @@ get "/annotations" do
   #return erb :annotations, :locals => {:datasetid => datasetid, :requestid => requestid}
 end
 
-MPE_DATASET = 'http://localhost:8092/dataset'
-MPE_MAPPINGS = 'http://localhost:8094/mappings'
+MPE_MAPPINGS = 'http://localhost:8094'
+
 
 post "/annotations" do
   displayname=session[:displayname]
@@ -332,7 +350,7 @@ post "/annotations" do
   puts requestid
   puts mapping_url
 
-  mpe_dataset_uri = URI(MPE_DATASET + '?dataset_id=' + datasetid)
+  mpe_dataset_uri = URI(MPE_DATASETS + '/dataset?dataset_id=' + datasetid)
   res = Net::HTTP.get_response(mpe_dataset_uri)
   status = ""
   puts res.body
@@ -360,7 +378,7 @@ post "/annotations" do
   end
 
 
-  add_mappings_uri = URI(MPE_MAPPINGS + "/#{organization_id}/#{datasetid}")
+  add_mappings_uri = URI(MPE_MAPPINGS + "/mappings/#{organization_id}/#{datasetid}")
   res = Net::HTTP.post_form(add_mappings_uri, 'mapping_document_download_url' => mapping_url)
   status = ""
   if res.code === "200"
@@ -479,7 +497,7 @@ post "/upload" do
       puts MPE_MAPPINGS
       puts "dataset_id: "
       puts dataset_id
-      add_mappings_uri = URI(MPE_MAPPINGS + "/#{organization_id}/#{dataset_id}")
+      add_mappings_uri = URI(MPE_MAPPINGS + "/mappings/#{organization_id}/#{dataset_id}")
       #add_mappings_uri = URI(MPE_MAPPINGS + "#{organization_id}/#{dataset_id}")
       puts "add mappings uri:"
       puts add_mappings_uri
@@ -497,4 +515,34 @@ post "/upload" do
     puts "ERROR not 200"
   end
   return erb :msg, :locals => {:msg => "Done"}
+end
+
+MPE_EXECUTIONS = 'http://localhost:8096'
+
+get "/executions" do
+  datasetid = params[:datasetid]
+  mappingid = params[:mappingid]
+
+  executionuri = MPE_EXECUTIONS + "/executions?dataset_id=#{datasetid}&mapping_document_id=#{mappingid}"
+  puts "executionuri = #{executionuri}"
+
+  res = Net::HTTP.get_response(URI(executionuri))
+  status = ""
+  execution_result_url = ""
+  puts res.body
+  puts res.code
+  if res.code === "200"
+    if valid_json?(res.body)
+      j = JSON.parse(res.body)
+      execution_result_url = j["mapping_execution_result_download_url"]
+
+      status = "OK, the result can be retrieved from: "
+    else
+      status = "OK"
+    end
+  else
+    status = "Internal Error"
+  end
+
+  return erb :msg, :locals => {:msg => status, :url => execution_result_url}
 end
