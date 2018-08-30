@@ -46,3 +46,30 @@ cd $WORKSPACE/mappingpedia-engine/mappingpedia-engine-mappings-ws
 git pull
 mvn clean spring-boot:run &
 
+echo "Installing Morph-RDB ..."
+cd $WORKSPACE/
+git clone https://github.com/oeg-upm/morph-rdb
+cd $WORKSPACE/morph-rdb
+git pull
+mvn clean install
+
+echo "Installing RML-Mapper ..."
+cd $WORKSPACE/
+git clone --recursive https://github.com/RMLio/RML-Mapper.git
+cd RML-Mapper
+git submodule update --init --recursive
+mvn clean install -DskipTests
+
+echo "Installing MAPPINGPEDIA ENGINE EXECUTIONS ..."
+cd $WORKSPACE/mappingpedia-engine/
+git clone https://github.com/oeg-upm/mappingpedia-engine-executions
+cd $WORKSPACE/mappingpedia-engine/mappingpedia-engine-executions
+git pull
+mvn clean install
+
+echo "Running MAPPINGPEDIA ENGINE EXECUTIONS WS ..."
+cd $WORKSPACE/mappingpedia-engine/
+git clone https://github.com/fpriyatna/mappingpedia-engine-executions-ws
+cd $WORKSPACE/mappingpedia-engine/mappingpedia-engine-executions-ws
+git pull
+mvn clean spring-boot:run &
