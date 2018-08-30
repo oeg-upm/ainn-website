@@ -521,7 +521,7 @@ get "/executions" do
       j = JSON.parse(res.body)
       execution_result_url = j["mapping_execution_result_download_url"]
 
-      status = "OK, the result can be retrieved from: #{execution_result_url}"
+      status = "OK, the result can be retrieved from: "
     else
       status = "OK"
     end
@@ -529,5 +529,5 @@ get "/executions" do
     status = "Internal Error"
   end
 
-  return erb :msg, :locals => {:msg => status}
+  return erb :msg, :locals => {:msg => status, :url => execution_result_url}
 end

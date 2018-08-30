@@ -1,4 +1,8 @@
 
 <p>
 	<%= msg %>
+	<% if defined?(url) %>
+	<a href="<%=url%>"><%=url%></a>
+	<% end %>
+
 </p>
