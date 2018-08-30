@@ -70,6 +70,8 @@
 </div>
 <div id="tab3">
   <h2>Mapping Editor</h2>
+  <p>Click <a target="_blank" href="http://127.0.0.1:5000/editor?source=<%=source%>&callback=http://127.0.0.1:8080/upload?dataset_id=<%=datasetid%>">here</a> to open in another window</p>
+
   <!-- <p>Click <a target="_blank" href="http://127.0.0.1:5000/editor?source=<%=source%>&callback=http://127.0.0.1:8080/upload?dataset_id=<%=datasetid%>">here</a> to open in another window</p> -->
   <embed id="editor"  width="100%" src="http://127.0.0.1:5000/editor?source=<%=source%>&callback=http://127.0.0.1:8080/upload?dataset_id=<%=datasetid%>"/>
 </div>
@@ -101,6 +103,7 @@ switch_to_tab("tab1");
     <tr>
       <th>Dataset Id</th>
       <th>Annotation Id</th>
+      <th>Execute Annotation</th>
     </tr>
   </thead>
   <% mappings.each do |mapping| %>
@@ -110,6 +113,9 @@ switch_to_tab("tab1");
     </td>
     <td>
       <%= mapping['id'] %>
+    </td>
+    <td>
+        <a href="executions?datasetid=<%=mapping['dataset_id']%>&mappingid=<%=mapping['id']%>">Execute Annotation</a>
     </td>
   </tr>
 <% end %>
