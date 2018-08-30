@@ -422,7 +422,9 @@ get "/requests" do
     puts 'will check the results'
     if valid_json?(res.body)
       j = JSON.parse(res.body)
-      return erb :requests, :locals => {:requests => j["data"]["request"]["edges"], :datasetid => datasetid}
+      puts "print resuts"
+      puts j["data"]["request"]
+      return erb :requests, :locals => {:requests => j["data"]["request"], :datasetid => datasetid}
     else
       return erb :msg, :locals => {:msg => "Internal Error"}
     end

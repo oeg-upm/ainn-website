@@ -39,13 +39,13 @@
   <tbody>
     <% requests.each do |request| %>
     <tr>
-      <td><%= request["node"]["id"] %></td>
-      <td><%= request["node"]["requestedOn"] %></td>
-      <td><%= request["node"]["description"] %></td>
-      <td><%= request["node"]["datasetId"] %></td>
+      <td><%= request["id"] %></td>
+      <td><%= request["requestedOn"] %></td>
+      <td><%= request["description"] %></td>
+      <td><%= request["datasetId"] %></td>
       <td>View</td>
       <td>
-        <a href="annotations?datasetid=<%=request["node"]["datasetId"]%>&requestid=<%=request["node"]["id"]%>">Answer Request</a>
+        <a href="annotations?datasetid=<%=request["datasetId"]%>&requestid=<%=request["id"]%>">Answer Request</a>
       </td>
     </tr>
     <%end %>
