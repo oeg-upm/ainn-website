@@ -1,0 +1,37 @@
+<form class="ui form" method="POST" action="/instances">
+  <div class="field">
+    <label>Filter by a class</label>
+    <input type="text" name="instanceClass" placeholder="Enter the class of the instances here "/>
+  </div>
+
+  <p>
+    <input class="ui fluid large teal submit secondary button" type="submit" name="Filter" value="Filter"/>
+
+  </p>
+
+</form>
+
+<hr>
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Instance Id</th>
+      <th>Title</th>
+    </tr>
+  </thead>
+
+  <% if defined?(instances) %>
+  <% instances.each do |instance| %>
+  <tr>
+    <td>
+      <%= instance['id'] %>
+    </td>
+    <td>
+      <%= instance['title'] %>
+    </td>
+  </tr>
+  <% end %>
+  <% end %>
+
+
+</table>
