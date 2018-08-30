@@ -318,7 +318,7 @@ get "/annotations" do
   end
   puts "download_url = #{download_url}"
 
-  mpe_mappings_uri = URI(MPE_MAPPINGS)
+  mpe_mappings_uri = URI(MPE_MAPPINGS + "/mappings")
   res = Net::HTTP.get_response(mpe_mappings_uri)
   if res.code === "200"
     if valid_json?(res.body)
@@ -337,7 +337,7 @@ get "/annotations" do
 end
 
 MPE_DATASET = 'http://localhost:8092/dataset'
-MPE_MAPPINGS = 'http://localhost:8094/mappings'
+MPE_MAPPINGS = 'http://localhost:8094'
 
 
 post "/annotations" do
@@ -379,7 +379,7 @@ post "/annotations" do
   end
 
 
-  add_mappings_uri = URI(MPE_MAPPINGS + "/#{organization_id}/#{datasetid}")
+  add_mappings_uri = URI(MPE_MAPPINGS + "/mappings/#{organization_id}/#{datasetid}")
   res = Net::HTTP.post_form(add_mappings_uri, 'mapping_document_download_url' => mapping_url)
   status = ""
   if res.code === "200"
@@ -499,7 +499,7 @@ post "/upload" do
       puts MPE_MAPPINGS
       puts "dataset_id: "
       puts dataset_id
-      add_mappings_uri = URI(MPE_MAPPINGS + "/#{organization_id}/#{dataset_id}")
+      add_mappings_uri = URI(MPE_MAPPINGS + "/mappings/#{organization_id}/#{dataset_id}")
       #add_mappings_uri = URI(MPE_MAPPINGS + "#{organization_id}/#{dataset_id}")
       puts "add mappings uri:"
       puts add_mappings_uri
