@@ -19,6 +19,8 @@ This might be different. See the output of the previous step which will output t
 
 4. ```sudo service apache2 restart```
 
+5. Add ```Listen 8082```in /etc/apache2/ports.conf
+
 # Run the app (whenever you start the app)
 ``` 
 cd $HOME/ainn-website/
