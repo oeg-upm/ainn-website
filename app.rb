@@ -137,6 +137,27 @@ get "/register" do
   erb :register
 end
 
+get "/instancedetails" do
+  instanceuri  = ""
+  if defined?(params[:instanceuri])
+    instanceuri = params[:instanceuri]
+  end
+
+  getinstancedetailssuri = MPE_COMMONS + "/instance_details?subject_uri=#{instanceuri}"
+  puts "getinstancedetailssuri = #{getinstancedetailssuri}"
+
+  res = Net::HTTP.get_response(URI(getinstancedetailssuri))
+  instance_details = Array.new
+  puts res.body
+  puts res.code
+  if res.code === "200" && valid_json?(res.body)
+      j = JSON.parse(res.body)
+      instance_details = j["results"]
+  end
+
+  return erb :instancedetails, :locals => {:instance_details => instance_details}
+end
+
 get "/instances" do
   classname = ""
   if defined?(params[:classname])

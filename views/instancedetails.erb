@@ -1,0 +1,18 @@
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <% instance_details.each do |instance_detail| %>
+  <tr>
+    <td>
+      <%= instance_detail['predicate'] %>
+    </td>
+    <td>
+      <%= instance_detail['object'] %>
+    </td>
+  </tr>
+<% end %>
+</table>
