@@ -209,7 +209,10 @@ get "/home" do
   erb :home
 end
 
-CKAN_ORGANIZATION_LIST = 'http://83.212.100.226/ckan/api/action/organization_list?all_fields=true'
+#CKAN_ORGANIZATION_LIST = 'http://83.212.100.226/ckan/api/action/organization_list?all_fields=true'
+MPE_COMMONS = "http://localhost:8098"
+CKAN_ORGANIZATION_LIST = "#{MPE_COMMONS}/organization_list"
+
 
 get "/mydatahub" do
   puts "I am in mydatahub"
@@ -220,7 +223,7 @@ get "/mydatahub" do
   if res.code === "200"
     if valid_json?(res.body)
       j = JSON.parse(res.body)
-      organization_list = j["result"]
+      organization_list = j["results"]
       #return erb :mydatahub, :locals => {:organization_list => organization_list}
     else
       #return erb :msg, :locals => {:msg => "Internal Error"}
