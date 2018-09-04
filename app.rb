@@ -147,7 +147,7 @@ get "/instancedetails" do
   puts "getinstancedetailssuri = #{getinstancedetailssuri}"
 
   res = Net::HTTP.get_response(URI(getinstancedetailssuri))
-  instance_details = ""
+  instance_details = Array.new
   puts res.body
   puts res.code
   if res.code === "200" && valid_json?(res.body)
