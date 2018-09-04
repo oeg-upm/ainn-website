@@ -22,6 +22,13 @@ cd $WORKSPACE/mappingpedia-engine/mappingpedia-engine-commons
 git pull
 mvn clean install
 
+echo "Running MAPPINGPEDIA ENGINE COMMONS WS ..."
+cd $WORKSPACE/mappingpedia-engine/
+git clone https://github.com/fpriyatna/mappingpedia-engine-commons-ws
+cd $WORKSPACE/mappingpedia-engine/mappingpedia-engine-commons-ws
+git pull
+mvn clean spring-boot:run &
+
 echo "Installing MAPPINGPEDIA ENGINE DATASETS ..."
 cd $WORKSPACE/mappingpedia-engine/mappingpedia-engine-datasets
 git pull
