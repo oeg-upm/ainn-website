@@ -33,8 +33,9 @@ Vagrant.configure("2") do |config|
    config.vm.network "forwarded_port", guest: 8080, host: 8081, host_ip: "127.0.0.1" #CKAN
    config.vm.network "forwarded_port", guest: 8082, host: 8083, host_ip: "127.0.0.1" #AINNOTATION Website
    config.vm.network "forwarded_port", guest: 8092, host: 8093, host_ip: "127.0.0.1" #mappingpedia-engine-datasets-ws
-   config.vm.network "forwarded_port", guest: 8094, host: 8095, host_ip: "127.0.0.1" #mappingpedia-mappings-datasets-ws
-   config.vm.network "forwarded_port", guest: 8096, host: 8097, host_ip: "127.0.0.1" #mappingpedia-executions-datasets-ws
+   config.vm.network "forwarded_port", guest: 8094, host: 8095, host_ip: "127.0.0.1" #mappingpedia-engine-mappings-ws
+   config.vm.network "forwarded_port", guest: 8096, host: 8097, host_ip: "127.0.0.1" #mappingpedia-engine-executions-ws
+   config.vm.network "forwarded_port", guest: 8098, host: 8099, host_ip: "127.0.0.1" #mappingpedia-engine-commons-ws
    config.vm.network "forwarded_port", guest: 8890, host: 8891, host_ip: "127.0.0.1" #virtuoso-conductor
    
    

@@ -103,7 +103,9 @@ switch_to_tab("tab1");
     <tr>
       <th>Dataset Id</th>
       <th>Annotation Id</th>
-      <th>Execute Annotation</th>
+      <th>Execute</th>
+      <th>Query</th>
+      <th>Status</th>
     </tr>
   </thead>
   <% mappings.each do |mapping| %>
@@ -116,6 +118,12 @@ switch_to_tab("tab1");
     </td>
     <td>
         <a href="executions?datasetid=<%=mapping['dataset_id']%>&mappingid=<%=mapping['id']%>">Execute Annotation</a>
+    </td>
+    <td>
+      Query Annotation
+    </td>
+    <td>
+      (Valid/Invalid)
     </td>
   </tr>
 <% end %>
