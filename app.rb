@@ -570,5 +570,5 @@ get "/executions" do
     status = "Internal Error"
   end
 
-  return erb :msg, :locals => {:msg => status, :url => execution_result_url}
+  return erb :msg, :locals => {:msg => status, :msg_url => execution_result_url}
 end
