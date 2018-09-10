@@ -352,7 +352,7 @@ get "/annotations" do
   end
   puts "download_url = #{download_url}"
 
-  mpe_mappings_uri = URI(MPE_MAPPINGS + "/mappings")
+  mpe_mappings_uri = URI(MPE_MAPPINGS + "/mappings?with_duplicates=true")
   res = Net::HTTP.get_response(mpe_mappings_uri)
   if res.code === "200"
     if valid_json?(res.body)

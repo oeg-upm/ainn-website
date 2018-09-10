@@ -101,8 +101,9 @@ switch_to_tab("tab1");
 <table class="ui celled table">
   <thead>
     <tr>
-      <th>Dataset Id</th>
       <th>Annotation Id</th>
+      <th>Date</th>
+      <th>Dataset Id</th>
       <th>Mapped Class</th>
       <th>Execute</th>
       <th>Query</th>
@@ -112,16 +113,19 @@ switch_to_tab("tab1");
   <% mappings.each do |mapping| %>
   <tr>
     <td>
-      <% dataset_url = "http://mappingpedia.linkeddata.es/instance/dataset/dataset-#{mapping['dataset_id']}" %>
-      <a href="instancedetails?instanceuri=<%= dataset_url %>"> <%= mapping['dataset_id'] %> </a>
-    </td>
-    <td>
       <% mapping_url = "http://mappingpedia.linkeddata.es/instance/mappingdocument/mappingDocument-#{mapping['id']}" %>
       <a href="instancedetails?instanceuri=<%= mapping_url %>"> <%= mapping['id'] %> </a>
     </td>
     <td>
-      <a href="<%= mapping['mapped_class'] %>"> <%= mapping['mapped_class'] %> </a>
+      <%= mapping['dateSubmitted'].gsub("Z^^http://www.w3.org/2001/XMLSchema#dateTime", "") %>
+    </td>
+    <td>
+      <% dataset_url = "http://mappingpedia.linkeddata.es/instance/dataset/dataset-#{mapping['dataset_id']}" %>
+      <a href="instancedetails?instanceuri=<%= dataset_url %>"> <%= mapping['dataset_id'] %> </a>
+    </td>
 
+    <td>
+      <a href="<%= mapping['mapped_class'] %>"> <%= mapping['mapped_class'] %> </a>
     </td>
     <td>
         <a href="executions?datasetid=<%=mapping['dataset_id']%>&mappingid=<%=mapping['id']%>">Execute Annotation</a>
