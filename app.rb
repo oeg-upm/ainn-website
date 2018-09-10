@@ -214,7 +214,7 @@ post "/dataset" do
       dataset_id = j["dataset_id"]
       dataset_url = "http://mappingpedia.linkeddata.es/instance/dataset/dataset-#{dataset_id}"
       tada_err_msg = call_tada("marketplace_"+dataset_id, distribution_download_url)
-      msg = "Dataset " + dataset_id + " has created successfully, "
+      msg = "Dataset " + dataset_id + " has been created successfully, "
       msg_url = "instancedetails?instanceuri=#{dataset_url}"
       msg_url_text = "Details"
       return erb :msg, :locals => {:msg => msg + tada_err_msg,
@@ -396,7 +396,6 @@ post "/annotations" do
       j = JSON.parse(res.body)
       organization_id = j["ckan_organization_id"]
       puts organization_id
-
     else
       status = "Server error"
       return erb :msg, :locals => {:msg => status}
@@ -405,10 +404,11 @@ post "/annotations" do
     if valid_json?(res.body)
       j = JSON.parse(res.body)
       status = j["status"]
+      return erb :msg, :locals => {:msg => status}
     else
       status = "Server error"
+      return erb :msg, :locals => {:msg => status}
     end
-    return erb :msg, :locals => {:msg => status}
   end
 
 
@@ -419,19 +419,29 @@ post "/annotations" do
     if valid_json?(res.body)
       j = JSON.parse(res.body)
       status = j["status"]
+      mapping_id = j["id"]
+      mapping_uri = "http://mappingpedia.linkeddata.es/instance/mappingdocument/mappingDocument-#{mapping_id}"
+      msg = "Annotation " + mapping_id + " has been created successfully, "
+      msg_url = "instancedetails?instanceuri=#{mapping_uri}"
+      msg_url_text = "Details"
+      return erb :msg, :locals => {:msg => msg,
+        :organization_id => organization_id,
+        :msg_url => msg_url,
+        :msg_url_text => msg_url_text}
     else
-      status = "Server error"
+      status = "OK but result is not a valid JSON"
+      return erb :msg, :locals => {:msg => status}
     end
   else
     if valid_json?(res.body)
       j = JSON.parse(res.body)
       status = j["status"]
+      return erb :msg, :locals => {:msg => status}
     else
       status = "Server error"
+      return erb :msg, :locals => {:msg => status}
     end
   end
-
-  return erb :msg, :locals => {:msg => status}
 end
 
 get "/requests" do
