@@ -202,15 +202,25 @@ post "/dataset" do
   organization_id = params[:organization_id]
   distribution_download_url = params[:distribution_download_url]
   uri = URI(MPE_DATASETS + "/datasets/" + organization_id)
-  res = Net::HTTP.post_form(uri, 'distribution_download_url' => distribution_download_url, 'ckan_organization_id' => organization_id, 'ckan_organization_name' => organization_id )
+  res = Net::HTTP.post_form(uri,
+    'distribution_download_url' => distribution_download_url,
+    'ckan_organization_id' => organization_id,
+    'ckan_organization_name' => organization_id )
   puts res.body
   puts res.code
   if res.code === "200"
     if valid_json?(res.body)
       j = JSON.parse(res.body)
       dataset_id = j["dataset_id"]
+      dataset_url = "http://mappingpedia.linkeddata.es/instance/dataset/dataset-#{dataset_id}"
       tada_err_msg = call_tada("marketplace_"+dataset_id, distribution_download_url)
-      return erb :msg, :locals => {:msg => "Dataset " + dataset_id + " is created successfully, "+tada_err_msg, :organization_id => organization_id}
+      msg = "Dataset " + dataset_id + " has created successfully, "
+      msg_url = "instancedetails?instanceuri=#{dataset_url}"
+      msg_url_text = "Details"
+      return erb :msg, :locals => {:msg => msg + tada_err_msg,
+        :organization_id => organization_id,
+        :msg_url => msg_url,
+        :msg_url_text => msg_url_text}
     else
       return erb :msg, :locals => {:msg => "Internal Error"}
     end

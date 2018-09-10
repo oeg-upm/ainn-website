@@ -2,7 +2,12 @@
 <p>
 	<%= msg %>
 	<% if defined?(msg_url) %>
-	<a href="<%=msg_url%>"><%=msg_url%></a>
+		<a href="<%=msg_url%>">
+		<% if defined?(msg_url_text) %>
+			<%=msg_url_text%>
+		<% else %>
+			<%=msg_url%>
+		<% end %>
+		</a>
 	<% end %>
-
 </p>
