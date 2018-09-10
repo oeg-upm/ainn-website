@@ -200,9 +200,11 @@ end
 MPE_DATASETS = 'http://localhost:8092'
 post "/dataset" do
   organization_id = params[:organization_id]
+  dataset_title = params[:dataset_title]
   distribution_download_url = params[:distribution_download_url]
   uri = URI(MPE_DATASETS + "/datasets/" + organization_id)
   res = Net::HTTP.post_form(uri,
+    'dataset_title' => dataset_title,
     'distribution_download_url' => distribution_download_url,
     'ckan_organization_id' => organization_id,
     'ckan_organization_name' => organization_id )
