@@ -28,10 +28,10 @@
 <table class="ui celled table">
   <thead>
     <tr>
-      <th>Requested Id</th>
+      <th>Request Id</th>
       <th>Requested On</th>
       <th>Description</th>
-      <th>Dataset ID</th>
+      <th>Dataset Id</th>
       <th>View</th>
       <th>Answer</th>
     </tr>
@@ -42,7 +42,10 @@
       <td><%= request["id"] %></td>
       <td><%= request["requestedOn"] %></td>
       <td><%= request["description"] %></td>
-      <td><%= request["datasetId"] %></td>
+      <td>
+        <% dataset_url = "http://mappingpedia.linkeddata.es/instance/dataset/dataset-#{request["datasetId"]}" %>
+        <a href="instancedetails?instanceuri=<%= dataset_url %>"> <%= request["datasetId"] %> </a>
+      </td>
       <td>View</td>
       <td>
         <a href="annotations?datasetid=<%=request["datasetId"]%>&requestid=<%=request["id"]%>">Answer Request</a>
