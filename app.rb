@@ -590,14 +590,20 @@ get "/executions" do
     if valid_json?(res.body)
       j = JSON.parse(res.body)
       execution_result_url = j["mapping_execution_result_download_url"]
-
-      status = "OK, the result can be retrieved from: "
+      execution_result_id = j["mapping_execution_result_id"]
+      execution_result_uri = "http://mappingpedia.linkeddata.es/instance/mappingdocument/mappingExecutionResult-#{execution_result_id}"
+      msg = "Annotation " + mappingid + " has been executed successfully, you can find the result "
+      msg_url = "instancedetails?instanceuri=#{execution_result_uri}"
+      msg_url_text = "here"
+      return erb :msg, :locals => {:msg => msg,
+        :msg_url => execution_result_url,
+        :msg_url_text => msg_url_text}
     else
       status = "OK"
+      return erb :msg, :locals => {:msg => status}
     end
   else
     status = "Internal Error"
+    return erb :msg, :locals => {:msg => status}
   end
-
-  return erb :msg, :locals => {:msg => status, :msg_url => execution_result_url}
 end
