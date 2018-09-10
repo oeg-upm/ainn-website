@@ -27,8 +27,7 @@
       <th>Requested On</th>
       <th>Description</th>
       <th>Dataset Id</th>
-      <th>View</th>
-      <th>Answer</th>
+      <th>Add/View Annotations</th>
     </tr>
   </thead>
   <tbody>
@@ -41,9 +40,8 @@
         <% dataset_url = "http://mappingpedia.linkeddata.es/instance/dataset/dataset-#{request["datasetId"]}" %>
         <a href="instancedetails?instanceuri=<%= dataset_url %>"> <%= request["datasetId"] %> </a>
       </td>
-      <td>View</td>
       <td>
-        <a href="annotations?datasetid=<%=request["datasetId"]%>&requestid=<%=request["id"]%>">Answer Request</a>
+        <a href="annotations?datasetid=<%=request["datasetId"]%>&requestid=<%=request["id"]%>">Add/View Annotations</a>
       </td>
     </tr>
     <%end %>
