@@ -8,6 +8,10 @@
 </select>
 </p>
 <p>
+  <label for="dataset_title">Dataset Title: </label>
+  <input type="text" name="dataset_title">
+</p>
+<p>
   <label for="distribution_download_url">Download URL of the new dataset: </label>
   <input type="text" name="distribution_download_url">
 </p>
@@ -23,7 +27,8 @@
 <table class="ui celled table">
   <thead>
     <tr>
-      <th>Dataset Id</th>
+      <th>Id</th>
+      <th>Title</th>
       <th>Date</th>
       <th>Add Annotation</th>
       <th>Request Annotation</th>
@@ -35,6 +40,9 @@
     <td>
       <% dataset_url = "http://mappingpedia.linkeddata.es/instance/dataset/dataset-#{dataset['id']}" %>
       <a href="instancedetails?instanceuri=<%= dataset_url %>"> <%= dataset['id'] %> </a>
+    </td>
+    <td>
+      <%= dataset['title'] %>
     </td>
     <td>
       <%= dataset['modified_date'].gsub("Z^^http://www.w3.org/2001/XMLSchema#dateTime", "") %>
