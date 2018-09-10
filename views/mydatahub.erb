@@ -25,6 +25,7 @@
     <tr>
       <th>Dataset Id</th>
       <th>Date</th>
+      <th>Add Annotation</th>
       <th>Request Annotation</th>
       <th>TADA (status)</th>
     </tr>
@@ -36,6 +37,9 @@
     </td>
     <td>
       <%= dataset['modified_date'].gsub("Z^^http://www.w3.org/2001/XMLSchema#dateTime", "") %>
+    </td>
+    <td>
+      <a href="annotations?datasetid=<%=dataset['id']%>">Add Annotation</a>
     </td>
     <td>
       <a href="requests?datasetid=<%= dataset['id'] %>">Request Annotation</a>
