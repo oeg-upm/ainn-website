@@ -103,6 +103,7 @@ switch_to_tab("tab1");
     <tr>
       <th>Dataset Id</th>
       <th>Annotation Id</th>
+      <th>Mapped Class</th>
       <th>Execute</th>
       <th>Query</th>
       <th>Status</th>
@@ -117,6 +118,10 @@ switch_to_tab("tab1");
     <td>
       <% mapping_url = "http://mappingpedia.linkeddata.es/instance/mappingdocument/mappingDocument-#{mapping['id']}" %>
       <a href="instancedetails?instanceuri=<%= mapping_url %>"> <%= mapping['id'] %> </a>
+    </td>
+    <td>
+      <a href="<%= mapping['mapped_class'] %>"> <%= mapping['mapped_class'] %> </a>
+
     </td>
     <td>
         <a href="executions?datasetid=<%=mapping['dataset_id']%>&mappingid=<%=mapping['id']%>">Execute Annotation</a>
