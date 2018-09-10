@@ -111,10 +111,12 @@ switch_to_tab("tab1");
   <% mappings.each do |mapping| %>
   <tr>
     <td>
-      <%= mapping['dataset_id'] %>
+      <% dataset_url = "http://mappingpedia.linkeddata.es/instance/dataset/dataset-#{mapping['dataset_id']}" %>
+      <a href="instancedetails?instanceuri=<%= dataset_url %>"> <%= mapping['dataset_id'] %> </a>
     </td>
     <td>
-      <%= mapping['id'] %>
+      <% mapping_url = "http://mappingpedia.linkeddata.es/instance/mappingdocument/mappingDocument-#{mapping['id']}" %>
+      <a href="instancedetails?instanceuri=<%= mapping_url %>"> <%= mapping['id'] %> </a>
     </td>
     <td>
         <a href="executions?datasetid=<%=mapping['dataset_id']%>&mappingid=<%=mapping['id']%>">Execute Annotation</a>
