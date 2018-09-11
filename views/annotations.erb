@@ -108,8 +108,8 @@ switch_to_tab("tab1");
       <th>Date</th>
       <th>Dataset Id</th>
       <th>Mapped Class</th>
-      <th>Execute</th>
-      <th>Query</th>
+      <th>Transform Dataset</th>
+      <th>Preview</th>
       <th>Status</th>
     </tr>
   </thead>
@@ -131,10 +131,10 @@ switch_to_tab("tab1");
       <a href="<%= mapping['mapped_class'] %>"> <%= mapping['mapped_class'] %> </a>
     </td>
     <td>
-        <a href="executions?datasetid=<%=mapping['dataset_id']%>&mappingid=<%=mapping['id']%>">Execute Annotation</a>
+        <a href="executions?datasetid=<%=mapping['dataset_id']%>&mappingid=<%=mapping['id']%>">Transform Dataset</a>
     </td>
     <td>
-      Query Annotation
+      <a href="executions?datasetid=<%=mapping['dataset_id']%>&mappingid=<%=mapping['id']%>&queryurl=https://raw.githubusercontent.com/oeg-upm/morph-rdb/master/morph-examples/examples-csv/preview.rq">Preview</a>
     </td>
     <td>
       (Valid/Invalid)
