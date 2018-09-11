@@ -578,7 +578,13 @@ get "/executions" do
   datasetid = params[:datasetid]
   mappingid = params[:mappingid]
 
-  executionuri = MPE_EXECUTIONS + "/executions?dataset_id=#{datasetid}&mapping_document_id=#{mappingid}"
+  if defined?(params[:queryurl])
+    queryurl = params[:queryurl]
+    executionuri = MPE_EXECUTIONS + "/executions?dataset_id=#{datasetid}&mapping_document_id=#{mappingid}&query_url=#{queryurl}"
+  else
+    executionuri = MPE_EXECUTIONS + "/executions?dataset_id=#{datasetid}&mapping_document_id=#{mappingid}"
+  end
+
   puts "executionuri = #{executionuri}"
 
   res = Net::HTTP.get_response(URI(executionuri))
@@ -592,7 +598,7 @@ get "/executions" do
       execution_result_url = j["mapping_execution_result_download_url"]
       execution_result_id = j["mapping_execution_result_id"]
       execution_result_uri = "http://mappingpedia.linkeddata.es/instance/mappingdocument/mappingExecutionResult-#{execution_result_id}"
-      msg = "Annotation " + mappingid + " has been executed successfully, you can find the result "
+      msg = "Annotations " + mappingid + " has been executed successfully, you can find the result "
       msg_url = "instancedetails?instanceuri=#{execution_result_uri}"
       msg_url_text = "here"
       return erb :msg, :locals => {:msg => msg,
