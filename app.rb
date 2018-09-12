@@ -536,7 +536,9 @@ post "/upload" do
   puts dataset_id
   cp(tempfile.path, "uploads/#{filename}")
   #get organization
-  mpe_dataset_uri = URI(MPE_DATASET + '?dataset_id=' + dataset_id)
+  get_dataset_endpoint = MPE_DATASETS + '/datasets?dataset_id=' + dataset_id
+  puts "get_dataset_endpoint = #{get_dataset_endpoint}"
+  mpe_dataset_uri = URI(get_dataset_endpoint)
   res = Net::HTTP.get_response(mpe_dataset_uri)
   status = ""
   puts res.body
