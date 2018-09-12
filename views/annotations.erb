@@ -111,6 +111,7 @@ switch_to_tab("tab1");
       <th>Transform Dataset</th>
       <th>Preview</th>
       <th>Status</th>
+      <th>Export as GraphQL</th>
     </tr>
   </thead>
   <% mappings.each do |mapping| %>
@@ -134,11 +135,10 @@ switch_to_tab("tab1");
         <a href="executions?datasetid=<%=mapping['dataset_id']%>&mappingid=<%=mapping['id']%>">Transform Dataset</a>
     </td>
     <td>
-      <a href="executions?datasetid=<%=mapping['dataset_id']%>&mappingid=<%=mapping['id']%>&queryurl=https://raw.githubusercontent.com/oeg-upm/morph-rdb/master/morph-examples/examples-csv/preview.rq">Preview</a>
+      <a href="executions?datasetid=<%=mapping['dataset_id']%>&mappingid=<%=mapping['id']%>&queryurl=">Preview</a>
     </td>
-    <td>
-      (Valid/Invalid)
-    </td>
+    <td> (New / Executed / Valid / Invalid)</td>
+    <td>Export as GraphQL</td>
   </tr>
 <% end %>
 </table>
