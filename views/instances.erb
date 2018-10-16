@@ -16,27 +16,28 @@
   <thead>
     <tr>
       <th>Id</th>
+      <th>Name</th>
       <th>Type</th>
-      <th>Title</th>
     </tr>
   </thead>
 
   <% if defined?(instances) %>
-  <% instances.each do |instance| %>
-  <tr>
-    <td>
-      <%= instance['id'] %>
-      <a href="instancedetails?instanceuri=<%= instance['id'] %>"> Details </a>
-
-    </td>
-    <td>
-      <%= instance['rdf_type'] %>
-    </td>
-    <td>
-      <%= instance['title'] %>
-    </td>
-  </tr>
-  <% end %>
+    <% instances.each do |instance| %>
+      <% if !instance['rdf_type'].include? "http://mappingpedia.linkeddata.es/vocabulary" and  !instance['rdf_type'].include? "http://www.w3.org/ns/r2rml" %>
+        <tr>
+          <td>
+          <%= instance['id'] %>
+          <a href="instancedetails?instanceuri=<%= instance['id'] %>"> Details </a>
+          </td>
+          <td>
+          <%= instance['title'] %>
+          </td>
+          <td>
+          <%= instance['rdf_type'] %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
   <% end %>
 
 
